@@ -1,5 +1,3 @@
 {
-  "buildCommand": "npx react-scripts build",
-  "outputDirectory": "build",
-  "installCommand": "npm install"
+  "cleanUrls": true
 }
