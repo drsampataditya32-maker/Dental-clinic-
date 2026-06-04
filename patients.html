@@ -6,7 +6,7 @@
 <title>Dr S Aditya</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 body{background:#0a0f1e;color:#e2e8f0;font-family:'DM Sans',sans-serif;min-height:100vh;}
 .shell{max-width:480px;margin:0 auto;min-height:100vh;position:relative;}
 .header{background:linear-gradient(135deg,#1e3a5f,#0a0f1e);padding:20px 18px 16px;display:flex;justify-content:space-between;align-items:center;}
@@ -35,7 +35,7 @@ body{background:#0a0f1e;color:#e2e8f0;font-family:'DM Sans',sans-serif;min-heigh
 .card-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
 .clinic-pill{font-size:10px;font-weight:700;color:#7dd3fc;border-radius:6px;padding:2px 7px;text-transform:uppercase;letter-spacing:.5px;}
 .urgent-dot{font-size:10px;color:#f97316;font-weight:700;}
-.fab{position:fixed;bottom:24px;right:50%;transform:translateX(calc(50% + 216px));width:56px;height:56px;border-radius:99px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;font-size:28px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(59,130,246,.5);display:flex;align-items:center;justify-content:center;z-index:50;}
+.fab{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:99px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;font-size:28px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(59,130,246,.5);display:flex;align-items:center;justify-content:center;z-index:50;}
 .page{display:none;flex-direction:column;min-height:100vh;}
 .page.active{display:flex;}
 .detail-header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 8px;background:#0a0f1e;position:sticky;top:0;z-index:10;}
@@ -316,4 +316,4 @@ function showEditPatient(){
 function savePatient(){
   const name=document.getElementById('f-name').value.trim();
   const phone=document.getElementById('f-phone').value.trim();
-  if(!name||!phone){alert(
+  if(!name||!phone){alert('Name and pho
