@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Dr S Aditya</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:#0a0f1e;color:#e2e8f0;font-family:'DM Sans',sans-serif;min-height:100vh;}
+.shell{max-width:480px;margin:0 auto;min-height:100vh;position:relative;}
+.header{background:linear-gradient(135deg,#1e3a5f,#0a0f1e);padding:20px 18px 16px;display:flex;justify-content:space-between;align-items:center;}
+.header-name{font-size:18px;font-weight:800;color:#fff;}
+.header-sub{font-size:12px;color:#7dd3fc;margin-top:2px;}
+.bell-btn{background:transparent;border:none;font-size:24px;cursor:pointer;position:relative;padding:4px;}
+.badge{position:absolute;top:-2px;right:-2px;background:#ef4444;color:#fff;font-size:10px;font-weight:700;border-radius:99px;padding:1px 5px;}
+.stats-row{display:flex;gap:10px;padding:12px 18px 0;}
+.stat-box{flex:1;background:#111827;border-radius:12px;padding:10px 12px;text-align:center;}
+.stat-value{font-size:22px;font-weight:800;color:#a78bfa;}
+.stat-label{font-size:10px;color:#64748b;margin-top:2px;text-transform:uppercase;letter-spacing:.5px;}
+.search-row{padding:12px 18px 0;}
+.search-input{width:100%;background:#111827;border:1px solid #1e293b;border-radius:10px;padding:10px 14px;color:#e2e8f0;font-size:14px;outline:none;font-family:inherit;}
+.filter-row{display:flex;gap:8px;padding:10px 18px 0;}
+.filter-btn{flex:1;padding:7px 0;border-radius:8px;border:1px solid #1e293b;background:#111827;color:#64748b;font-size:13px;font-weight:600;cursor:pointer;}
+.filter-btn.active{background:#1e3a5f;color:#7dd3fc;border-color:#3b82f6;}
+.list{padding:10px 18px 80px;}
+.empty{color:#334155;text-align:center;padding:40px 0;font-size:14px;}
+.card{background:#111827;border-radius:14px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid #1e293b;}
+.card.urgent{border-color:#f97316;box-shadow:0 0 0 1px #f97316;}
+.avatar{width:42px;height:42px;border-radius:99px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0;}
+.card-body{flex:1;min-width:0;}
+.card-name{font-size:15px;font-weight:700;color:#f1f5f9;}
+.card-meta{font-size:12px;color:#64748b;margin-top:2px;}
+.card-treatment{font-size:11px;color:#94a3b8;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.card-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+.clinic-pill{font-size:10px;font-weight:700;color:#7dd3fc;border-radius:6px;padding:2px 7px;text-transform:uppercase;letter-spacing:.5px;}
+.urgent-dot{font-size:10px;color:#f97316;font-weight:700;}
+.fab{position:fixed;bottom:24px;right:50%;transform:translateX(calc(50% + 216px));width:56px;height:56px;border-radius:99px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;font-size:28px;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(59,130,246,.5);display:flex;align-items:center;justify-content:center;z-index:50;}
+.page{display:none;flex-direction:column;min-height:100vh;}
+.page.active{display:flex;}
+.detail-header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 8px;background:#0a0f1e;position:sticky;top:0;z-index:10;}
+.back-btn{background:transparent;border:none;color:#7dd3fc;font-size:15px;cursor:pointer;font-weight:600;font-family:inherit;}
+.edit-btn{background:#1e293b;border:none;color:#94a3b8;font-size:13px;cursor:pointer;padding:6px 14px;border-radius:8px;font-weight:600;font-family:inherit;}
+.hero{display:flex;gap:16px;padding:10px 18px 14px;background:#111827;border-bottom:1px solid #1e293b;}
+.hero-avatar{width:60px;height:60px;border-radius:99px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;flex-shrink:0;}
+.hero-name{font-size:18px;font-weight:800;color:#f1f5f9;}
+.hero-meta{font-size:13px;color:#64748b;margin-top:3px;}
+.tab-row{display:flex;border-bottom:1px solid #1e293b;padding:0 18px;}
+.tab{flex:1;padding:12px 0;background:transparent;border:none;color:#64748b;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;font-family:inherit;}
+.tab.active{color:#7dd3fc;border-bottom-color:#3b82f6;}
+.tab-content{flex:1;overflow-y:auto;padding:14px 18px 120px;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+.info-section{background:#111827;border-radius:12px;padding:12px 14px;border:1px solid #1e293b;margin-bottom:12px;}
+.info-title{font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.8px;font-weight:700;margin-bottom:10px;}
+.info-row{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;gap:12px;}
+.info-label{font-size:12px;color:#64748b;flex-shrink:0;min-width:100px;}
+.info-value{font-size:13px;color:#cbd5e1;text-align:right;word-break:break-word;}
+.detail-actions{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#0a0f1e;border-top:1px solid #1e293b;padding:12px 18px;display:flex;flex-direction:column;gap:8px;z-index:20;}
+.wa-btn{background:#25d366;color:#fff;border:none;border-radius:10px;padding:12px 18px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;display:block;font-family:inherit;}
+.delete-btn{background:transparent;color:#ef4444;border:1px solid #ef4444;border-radius:10px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.add-visit-btn{background:#1e3a5f;border:1px solid #3b82f6;color:#7dd3fc;border-radius:10px;padding:9px 18px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:12px;width:100%;font-family:inherit;}
+.visit-card{background:#111827;border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid #1e293b;}
+.visit-date{font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.visit-treatment{font-size:15px;font-weight:700;color:#f1f5f9;}
+.visit-meta{font-size:12px;color:#94a3b8;margin-top:4px;}
+.visit-next{font-size:12px;color:#7dd3fc;margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.wa-mini{color:#25d366;font-size:12px;font-weight:700;text-decoration:none;}
+.tooth-pill{background:#f97316;color:#fff;font-size:11px;font-weight:700;border-radius:6px;padding:2px 8px;display:inline-block;margin:2px;}
+.form-scroll{flex:1;overflow-y:auto;padding:14px 18px 40px;}
+label.lbl{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;font-weight:700;display:block;margin-bottom:4px;margin-top:10px;}
+input.inp,select.inp,textarea.inp{width:100%;background:#0f172a;border:1px solid #1e293b;border-radius:8px;padding:10px 12px;color:#e2e8f0;font-size:14px;outline:none;font-family:inherit;}
+.row2{display:flex;gap:10px;}
+.row2>div{flex:1;}
+.save-btn{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+.cancel-btn{background:#1e293b;color:#94a3b8;border:none;border-radius:10px;padding:11px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;}
+.visit-form-box{background:#111827;border-radius:12px;padding:16px 14px;border:1px solid #3b82f6;margin-bottom:14px;}
+.form-title{font-size:15px;font-weight:700;color:#7dd3fc;margin-bottom:12px;}
+.tooth-grid{background:#0f172a;border-radius:10px;padding:10px;}
+.tooth-row{display:flex;gap:3px;justify-content:center;margin-bottom:4px;}
+.tooth-btn{width:28px;height:28px;border-radius:6px;border:none;cursor:pointer;font-size:9px;font-weight:700;background:#1e293b;color:#94a3b8;}
+.tooth-btn.sel{background:#f97316;color:#fff;}
+.img-upload-btn{flex:1;background:#1e293b;border:1px dashed #334155;color:#94a3b8;border-radius:10px;padding:12px 8px;font-size:13px;font-weight:600;cursor:pointer;text-align:center;display:block;}
+.img-section{font-size:11px;color:#475569;text-transform:uppercase;letter-spacing:.7px;font-weight:700;margin-bottom:8px;margin-top:12px;}
+.img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;}
+.img-thumb{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;cursor:pointer;background:#111827;}
+.img-thumb img{width:100%;height:100%;object-fit:cover;}
+.img-remove{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.7);color:#fff;border:none;border-radius:99px;width:20px;height:20px;font-size:10px;cursor:pointer;}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:200;cursor:pointer;}
+.lightbox img{max-width:95vw;max-height:80vh;border-radius:10px;}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:100;}
+.modal-box{background:#1e293b;border-radius:16px;padding:24px 22px;width:280px;text-align:center;}
+.modal-title{font-size:17px;font-weight:700;color:#f1f5f9;margin-bottom:8px;}
+.modal-sub{font-size:13px;color:#64748b;margin-bottom:20px;}
+.modal-btns{display:flex;gap:10px;}
+.modal-cancel{flex:1;background:#0f172a;color:#94a3b8;border:none;border-radius:8px;padding:10px;font-size:14px;cursor:pointer;font-family:inherit;}
+.modal-confirm{flex:1;background:#ef4444;color:#fff;border:none;border-radius:8px;padding:10px;font-size:14px;cursor:pointer;font-family:inherit;}
+.reminder-section{font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.7px;font-weight:700;margin-bottom:8px;margin-top:12px;}
+.reminder-card{background:#111827;border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid #1e293b;display:flex;align-items:center;gap:12px;}
+.wa-small{background:#25d366;color:#fff;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;text-decoration:none;flex-shrink:0;}
+.btn-row{display:flex;gap:10px;margin-top:14px;}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+  <div class="header">
+    <div>
+      <div class="header-name">Dr S Aditya</div>
+      <div class="header-sub">BDS (WBUHS)</div>
+    </div>
+    <button class="bell-btn" onclick="showReminders()">🔔<span class="badge" id="reminder-badge" style="display:none">0</span></button>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-value" id="stat-total">0</div><div class="stat-label">Total</div></div>
+    <div class="stat-box"><div class="stat-value" style="color:#38bdf8" id="stat-kol">0</div><div class="stat-label">Kolkata</div></div>
+    <div class="stat-box"><div class="stat-value" style="color:#fb923c" id="stat-how">0</div><div class="stat-label">Howrah</div></div>
+  </div>
+  <div class="search-row"><input class="search-input" id="search-input" placeholder="🔍  Search name or phone..." oninput="renderList()"/></div>
+  <div class="filter-row">
+    <button class="filter-btn active" id="filter-all" onclick="setFilter('all')">All</button>
+    <button class="filter-btn" id="filter-kolkata" onclick="setFilter('kolkata')">Kolkata</button>
+    <button class="filter-btn" id="filter-howrah" onclick="setFilter('howrah')">Howrah</button>
+  </div>
+  <div class="list" id="patient-list"></div>
+  <button class="fab" onclick="showAddPatient()">＋</button>
+</div>
+
+<!-- ADD/EDIT PATIENT PAGE -->
+<div id="page-form" class="page">
+  <div class="detail-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="header-name" id="form-title">New Patient</div>
+  </div>
+  <div class="form-scroll">
+    <input type="hidden" id="form-id"/>
+    <label class="lbl">Full Name *</label>
+    <input class="inp" id="f-name" placeholder="Patient's full name"/>
+    <div class="row2">
+      <div><label class="lbl">Age</label><input class="inp" id="f-age" type="number" placeholder="Years"/></div>
+      <div><label class="lbl">Gender</label>
+        <select class="inp" id="f-gender"><option>Male</option><option>Female</option><option>Other</option></select>
+      </div>
+    </div>
+    <label class="lbl">Phone (WhatsApp) *</label>
+    <input class="inp" id="f-phone" type="tel" placeholder="10-digit mobile"/>
+    <label class="lbl">Blood Group</label>
+    <select class="inp" id="f-blood">
+      <option value="">—</option>
+      <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+      <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+    </select>
+    <label class="lbl">Clinic *</label>
+    <select class="inp" id="f-clinic"><option value="kolkata">Kolkata</option><option value="howrah">Howrah</option></select>
+    <label class="lbl">Address</label>
+    <input class="inp" id="f-address" placeholder="Patient's address"/>
+    <label class="lbl">Known Allergies</label>
+    <input class="inp" id="f-allergies" placeholder="e.g. Penicillin, NSAIDs..."/>
+    <label class="lbl">Medical History</label>
+    <textarea class="inp" id="f-history" style="height:80px;resize:vertical" placeholder="Diabetes, hypertension..."></textarea>
+    <button class="save-btn" style="width:100%;margin-top:16px" onclick="savePatient()">Save Patient</button>
+  </div>
+</div>
+
+<!-- PATIENT DETAIL PAGE -->
+<div id="page-detail" class="page">
+  <div class="detail-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <button class="edit-btn" onclick="showEditPatient()">Edit</button>
+  </div>
+  <div class="hero" id="detail-hero"></div>
+  <div class="tab-row">
+    <button class="tab active" onclick="switchTab('overview')">Overview</button>
+    <button class="tab" onclick="switchTab('visits')">Visits</button>
+    <button class="tab" onclick="switchTab('images')">Images</button>
+  </div>
+  <div class="tab-content">
+    <div class="tab-pane active" id="tab-overview"></div>
+    <div class="tab-pane" id="tab-visits"></div>
+    <div class="tab-pane" id="tab-images"></div>
+  </div>
+  <div class="detail-actions" id="detail-actions"></div>
+</div>
+
+<!-- REMINDERS PAGE -->
+<div id="page-reminders" class="page">
+  <div class="detail-header">
+    <button class="back-btn" onclick="goHome()">← Back</button>
+    <div class="header-name">Reminders</div>
+  </div>
+  <div class="form-scroll" id="reminder-list"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" style="display:none" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt=""/>
+  <div id="lightbox-caption" style="color:#94a3b8;font-size:12px;margin-top:8px;"></div>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="modal" id="delete-modal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title">Delete Patient?</div>
+    <div class="modal-sub">This cannot be undone.</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="modal-confirm" onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- end shell -->
+
+<script>
+const KEY = 'dr_aditya_v1';
+let patients = [];
+let currentId = null;
+let currentFilter = 'all';
+let visitFormOpen = false;
+let selectedTeeth = [];
+
+const TEETH = [[18,17,16,15,14,13,12,11,21,22,23,24,25,26,27,28],[48,47,46,45,44,43,42,41,31,32,33,34,35,36,37,38]];
+
+function load(){try{const s=localStorage.getItem(KEY);patients=s?JSON.parse(s):[];}catch{patients=[];}}
+function save(){localStorage.setItem(KEY,JSON.stringify(patients));}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2);}
+function fmtDate(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});}
+function daysUntil(iso){if(!iso)return null;return Math.ceil((new Date(iso)-new Date())/(86400000));}
+function waLink(phone,msg){const n=phone.replace(/\D/g,'');const f=n.startsWith('91')?n:'91'+n;return'https://wa.me/'+f+'?text='+encodeURIComponent(msg);}
+function clinicColor(c){return c==='kolkata'?'#1e3a5f':'#3b1f0a';}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goHome(){showPage('page-home');renderList();updateStats();}
+
+function setFilter(f){
+  currentFilter=f;
+  ['all','kolkata','howrah'].forEach(x=>{
+    document.getElementById('filter-'+x).classList.toggle('active',x===f);
+  });
+  renderList();
+}
+
+function updateStats(){
+  document.getElementById('stat-total').textContent=patients.length;
+  document.getElementById('stat-kol').textContent=patients.filter(p=>p.clinic==='kolkata').length;
+  document.getElementById('stat-how').textContent=patients.filter(p=>p.clinic==='howrah').length;
+  const remCount=patients.filter(p=>{const l=p.visits?.slice(-1)[0];if(!l?.nextAppointment)return false;const d=daysUntil(l.nextAppointment);return d!==null&&d<=3&&d>=0;}).length;
+  const badge=document.getElementById('reminder-badge');
+  badge.textContent=remCount;
+  badge.style.display=remCount>0?'':'none';
+}
+
+function renderList(){
+  const q=document.getElementById('search-input').value.toLowerCase();
+  const filtered=patients.filter(p=>{
+    const ms=!q||p.name?.toLowerCase().includes(q)||p.phone?.includes(q);
+    const mc=currentFilter==='all'||p.clinic===currentFilter;
+    return ms&&mc;
+  });
+  const el=document.getElementById('patient-list');
+  if(!filtered.length){el.innerHTML='<div class="empty">No patients found</div>';return;}
+  el.innerHTML=filtered.map(p=>{
+    const last=p.visits?.slice(-1)[0];
+    const days=last?.nextAppointment?daysUntil(last.nextAppointment):null;
+    const urgent=days!==null&&days<=3&&days>=0;
+    return`<div class="card${urgent?' urgent':''}" onclick="showDetail('${p.id}')">
+      <div class="avatar">${(p.name||'?')[0].toUpperCase()}</div>
+      <div class="card-body">
+        <div class="card-name">${p.name}</div>
+        <div class="card-meta">${p.age} yrs · ${p.gender} · ${p.phone}</div>
+        ${last?.treatment?`<div class="card-treatment">🦷 ${last.treatment}</div>`:''}
+      </div>
+      <div class="card-right">
+        <span class="clinic-pill" style="background:${clinicColor(p.clinic)}">${p.clinic==='kolkata'?'Kolkata':'Howrah'}</span>
+        ${urgent?`<div class="urgent-dot">Appt ${days===0?'Today':'in '+days+'d'}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function showAddPatient(){
+  document.getElementById('form-title').textContent='New Patient';
+  document.getElementById('form-id').value='';
+  ['name','age','phone','address','allergies'].forEach(f=>document.getElementById('f-'+f).value='');
+  document.getElementById('f-gender').value='Male';
+  document.getElementById('f-blood').value='';
+  document.getElementById('f-clinic').value='kolkata';
+  document.getElementById('f-history').value='';
+  showPage('page-form');
+}
+
+function showEditPatient(){
+  const p=patients.find(x=>x.id===currentId);
+  if(!p)return;
+  document.getElementById('form-title').textContent='Edit Patient';
+  document.getElementById('form-id').value=p.id;
+  document.getElementById('f-name').value=p.name||'';
+  document.getElementById('f-age').value=p.age||'';
+  document.getElementById('f-phone').value=p.phone||'';
+  document.getElementById('f-gender').value=p.gender||'Male';
+  document.getElementById('f-blood').value=p.bloodGroup||'';
+  document.getElementById('f-clinic').value=p.clinic||'kolkata';
+  document.getElementById('f-address').value=p.address||'';
+  document.getElementById('f-allergies').value=p.allergies||'';
+  document.getElementById('f-history').value=p.medicalHistory||'';
+  showPage('page-form');
+}
+
+function savePatient(){
+  const name=document.getElementById('f-name').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  if(!name||!phone){alert(
